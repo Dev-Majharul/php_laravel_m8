@@ -14,6 +14,22 @@ body {
   overflow-x: hidden;
   position: relative;
   perspective: 1000px;
+  scroll-behavior: smooth;
+}
+
+/* Body state when mobile nav is open */
+#nav-toggle:checked ~ .nav-links {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+#nav-toggle:checked + .mobile-nav-toggle i {
+  transform: rotate(90deg);
+}
+
+#nav-toggle:checked ~ * {
+  pointer-events: auto;
 }
 
 body::before {
@@ -62,43 +78,49 @@ body::after {
   }
 }
 
-/* 45-degree Scroll Animation */
-html {
-  scroll-behavior: smooth;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+/* CSS-only scroll animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-.scroll-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  perspective: 1000px;
-  z-index: -1;
+@keyframes fadeIn45 {
+  from {
+    opacity: 0;
+    transform: translate3d(-30px, -30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-.scroll-element {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
+/* Apply animations to sections */
+section {
+  animation: fadeIn45 1s forwards;
+  animation-play-state: paused;
+  opacity: 0;
 }
 
-/* Add this class to each section */
+section:target {
+  animation-play-state: running;
+}
+
+/* Make first section visible by default */
+section:first-of-type {
+  opacity: 1;
+}
+
 .parallax-section {
   transform-style: preserve-3d;
-  transform: translateZ(0);
   transition: transform 0.5s ease-out;
   will-change: transform;
-}
-
-/* Scroll direction animation at 45 degrees */
-@keyframes scrollDirection {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(100px, 100px, 50px); }
 }
 
 a {
@@ -133,17 +155,23 @@ section {
   position: relative;
 }
 
+/* Hide the checkbox */
+.nav-toggle {
+  display: none;
+}
+
 /* Header Styles */
 .header {
   background-color: rgba(10, 10, 40, 0.8);
   backdrop-filter: blur(10px);
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   z-index: 1000;
   border-bottom: 1px solid #00f0ff;
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
   transform-style: preserve-3d;
-  transform: translateZ(50px);
 }
 
 .nav {
@@ -218,6 +246,28 @@ section {
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: all 0.3s ease;
+}
+
+/* Mobile Nav Button */
+.mobile-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #00f0ff;
+  cursor: pointer;
+  z-index: 1001;
+  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.mobile-nav-toggle:hover {
+  color: #ff00aa;
+  text-shadow: 0 0 10px #ff00aa;
+}
+
+.mobile-nav-toggle i {
+  transition: transform 0.3s ease;
 }
 
 /* Hero Section */
@@ -508,36 +558,6 @@ section {
   transform-style: preserve-3d;
 }
 
-/* Scroll Animation for all sections */
-section {
-  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-/* Apply 45 degree scroll animation */
-section:nth-child(odd) {
-  transform-origin: left center;
-}
-
-section:nth-child(even) {
-  transform-origin: right center;
-}
-
-/* Scroll animation trigger - will be applied via JavaScript */
-.scroll-animate {
-  animation: scrollIn45 1s forwards cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-@keyframes scrollIn45 {
-  from {
-    opacity: 0;
-    transform: translate3d(-50px, -50px, -100px) rotate3d(1, 1, 0, 10deg);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg);
-  }
-}
-
 /* Footer */
 .footer {
   background: rgba(10, 10, 30, 0.9);
@@ -561,8 +581,36 @@ section:nth-child(even) {
     padding: 15px 20px;
   }
   
+  .mobile-nav-toggle {
+    display: block;
+  }
+  
   .nav-links {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(10, 10, 40, 0.95);
+    backdrop-filter: blur(10px);
+    transform: translateY(-100%);
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), 
+                opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                visibility 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .nav-links li {
+    margin: 15px 0;
+  }
+  
+  .nav-links li a {
+    font-size: 1.5rem;
   }
   
   .hero h1 {
