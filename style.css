@@ -78,10 +78,10 @@ body::after {
   }
 }
 
-/* CSS-only scroll animations */
+/* CSS-only scroll animations - Modified to keep sections visible */
 @keyframes fadeInUp {
   from {
-    opacity: 0;
+    opacity: 0.2;
     transform: translate3d(0, 30px, 0);
   }
   to {
@@ -92,8 +92,8 @@ body::after {
 
 @keyframes fadeIn45 {
   from {
-    opacity: 0;
-    transform: translate3d(-30px, -30px, 0);
+    opacity: 0.2;
+    transform: translate3d(-20px, -20px, 0);
   }
   to {
     opacity: 1;
@@ -101,20 +101,17 @@ body::after {
   }
 }
 
-/* Apply animations to sections */
+/* Apply animations to sections but keep them visible by default */
 section {
-  animation: fadeIn45 1s forwards;
-  animation-play-state: paused;
-  opacity: 0;
+  animation: fadeIn45 1.5s forwards;
+  opacity: 1; /* Make all sections visible by default */
+  transition: opacity 0.5s ease;
+  position: relative;
+  padding: 80px 20px;
 }
 
 section:target {
   animation-play-state: running;
-}
-
-/* Make first section visible by default */
-section:first-of-type {
-  opacity: 1;
 }
 
 .parallax-section {
@@ -148,11 +145,6 @@ a::after {
 
 a:hover::after {
   width: 100%;
-}
-
-section {
-  padding: 80px 20px;
-  position: relative;
 }
 
 /* Hide the checkbox */
@@ -277,7 +269,7 @@ section {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding-top: 160px;
+  padding-top: 80px; /* Reduced from 160px to make it more visible */
   position: relative;
   transform-style: preserve-3d;
 }
@@ -396,6 +388,7 @@ section {
   transform-style: preserve-3d;
   position: relative;
   z-index: 2;
+  margin-top: 20px; /* Add margin to ensure visibility */
 }
 
 .features h2 {
@@ -505,6 +498,9 @@ section {
   position: relative;
   overflow: hidden;
   transform-style: preserve-3d;
+  margin-top: 20px; /* Add margin to ensure visibility */
+  padding-top: 100px; /* Increase padding for better visibility */
+  padding-bottom: 100px;
 }
 
 .download::before {
@@ -613,6 +609,11 @@ section {
     font-size: 1.5rem;
   }
   
+  .hero {
+    padding-top: 60px;
+    min-height: 80vh; /* Reduce height on mobile */
+  }
+  
   .hero h1 {
     font-size: 2.5rem;
   }
@@ -631,6 +632,11 @@ section {
   
   .hero-content {
     padding: 30px 15px;
+  }
+  
+  .download {
+    padding-top: 60px;
+    padding-bottom: 60px;
   }
 }
 
