@@ -154,7 +154,7 @@ a:hover::after {
 
 /* Header Styles */
 .header {
-  background-color: rgba(10, 10, 40, 0.8);
+  background-color: white;
   backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
@@ -582,6 +582,14 @@ a:hover::after {
   }
   
   .nav-links {
+    display: none;
+  }
+  
+  #nav-toggle:checked ~ .nav-links {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
     position: fixed;
     top: 0;
     left: 0;
@@ -592,13 +600,7 @@ a:hover::after {
     align-items: center;
     background-color: rgba(10, 10, 40, 0.95);
     backdrop-filter: blur(10px);
-    transform: translateY(-100%);
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), 
-                opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-                visibility 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     z-index: 999;
-    opacity: 0;
-    visibility: hidden;
   }
   
   .nav-links li {
